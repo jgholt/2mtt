@@ -1,0 +1,126 @@
+
+== Creating a Python virtualenv on Mac for Ansible with AWS
+In order to use your Mac as a localhost for deploying Ansible integrated with AWS, there are a number of configruation items that need to be setup before you will be able to harness the power of Ansbile. 
+
+Ansible is written in Python and requires certain dependencies to work with cloud platforms. In this case it uses a python package called BOTO and others depending on the config being deployed.
+
+*1.* For installing the packages needed, we will utilize Brew, which seems the easiest way, but other forms can be used. If you haven't installed Brew on your Mac, you can follow these instructions link:https://docs.brew.sh/Installation[instructions].
+
+[source, shell]
+----
+$ brew install python pyenv-virtualenv
+----
+
+NOTE: You may need to previously install the following dependencies:
+
+[source, shell]
+----
+$ brew install openssl readline sqlite3 xz zlib
+$ brew brew install awscli
+----
+
+*2.* Create a virtualenv, called ansible-workshop taking care to use python3 (you can give your virtual environment the name you want, but it's useful to give it one that is meaningful).
+
+[source, shell]
+----
+$ pyenv virtualenv ansible-workshop
+----
+
+NOTE: You will need to install a specific version of python into the Pyenv, for usage of AgnosticD with Ansible and AWS use a version of python 3.8.X
+
+[source, shell]
+----
+$ pyenv install -v 3.8.7
+----
+
+*3.* Activate the virtualenv, (you will need to do this every-time you login).
+
+[source, shell]
+----
+$ source /Users/[USER]/.pyenv/versions/ansible-workshop/bin/activate
+----
+
+NOTE: Your prompt will now change to indicate the virtualenv has been activated. e.g. 
+
+`(ansible-workshop) [user@sassenach ]$`
+
+*4.* Verify the python version in your virtual env is correct by simply executing:
+
+[source, shell]
+----
+$ python --version
+Python 3.8.7
+----
+
+*5.* Upgrade pip, the python package manager, to the latest as well as other required packages for Ansible + AWS.
+
+[source, shell]
+----
+$ pip install --upgrade pip
+----
+
+NOTE: if you find the error "`error: pyenv: pip: command not found`", it could because you need `pip3`, in that case please do:
+
+[source, shell]
+----
+$ alias pip=pip3
+----
+*6.* Install the other python packages required packages for Ansible + AWS.
+
+[source, shell]
+----
+$ pip install boto 
+$ pip install boto3 
+$ pip install netaddr 
+$ pip install passlib 
+$ pip install pywinrm 
+$ pip install requests 
+$ pip install requests-credssp
+----
+  **Are you using Automation Controller (formerly Ansible Tower)?**  [Automation Controller Instructions](#controller-instructions)
+
+*7.* Set your Access Key ID and Secret Access Key from Step 2 under ~/.aws/credentials
+
+```
+[root@centos ~]# cat ~/.aws/credentials
+[default]
+aws_access_key_id = ABCDEFGHIJKLMNOP
+aws_secret_access_key = ABCDEFGHIJKLMNOP/ABCDEFGHIJKLMNOP
+```
+
+*8i.* Now that your environment is corretly setup, you can proceed with provisioning the Ansible Workshops.  If you haven't done so already make sure you have the repo cloned to the machine executing the playbook.
+```
+        git clone https://github.com/ansible/workshops.git
+        cd workshops/
+```
+
+*9.* Run the requirements.yml file to ensure all the Ansible collection prerequisites are met.
+
+```
+￼ansible-galaxy collection install -r requirements.yml
+```
+
+*10.*  Some of the workshops require certain images provided via the AWS marketplace:
+
+  - For Networking you will need the Cisco CSR (Cloud Services Router) [Click here](https://aws.amazon.com/marketplace/pp/B00NF48FI2/), the Arista vEOS Router [Click here](https://aws.amazon.com/marketplace/pp/B077YJYMK5/), AND the Juniper vSRX NextGen Firewall [Click here](https://aws.amazon.com/marketplace/pp/B01LYWCGDX/)
+  - For F5 you will need the F5 BIG-IP [Click here](https://aws.amazon.com/marketplace/pp/B079C44MFH/)
+  - For the security workshop the [Check Point CloudGuard Security Management](https://aws.amazon.com/marketplace/pp/B07KSBV1MM?qid=1613741711380&sr=0-2&ref_=srh_res_product_title) and the [Check Point CloudGuard Network Security](https://aws.amazon.com/marketplace/pp/B07LB3YN9P?ref_=aws-mp-console-subscription-detail-byol)
+
+# Automation Controller Instructions
+
+Are you using Red Hat Ansible Automation Controller to provision Ansible Automation Workshops? (e.g. is your control node Ansible Automation Controller?)  Make sure to use umask for the installation of boto3 on the control node.
+https://docs.ansible.com/ansible-tower/latest/html/upgrade-migration-guide/virtualenv.html
+
+```
+[user@centos ~]$ sudo -i
+[root@centos ~]# source /var/lib/awx/venv/ansible/bin/activate
+[root@centos ~]# umask 0022
+[root@centos ~]# dnf install -y python3-boto3
+[root@centos ~]# deactivate
+```
+
+## Getting Help
+
+Please [file issues on Github](https://github.com/ansible/workshops/issues).  Please fill out all required information.  Your issue will be closed if you skip required information in the Github issues template.
+
+![Ansible-Workshop-Logo.png](../images/Ansible-Workshop-Logo.png)
