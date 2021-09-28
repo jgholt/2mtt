@@ -16,7 +16,7 @@ NOTE: You may need to previously install the following dependencies:
 [source, shell]
 ----
 $ brew install openssl readline sqlite3 xz zlib
-$ brew brew install awscli
+$ brew install awscli
 ----
 
 *2.* Create a virtualenv, called ansible-workshop taking care to use python3 (you can give your virtual environment the name you want, but it's useful to give it one that is meaningful).
