@@ -1,6 +1,6 @@
 
 == Creating a Python virtualenv on Mac for Ansible with AWS
-In order to use your Mac as a localhost for deploying Ansible integrated with AWS, there are a number of configruation items that need to be setup before you will be able to harness the power of Ansbile. 
+In order to use your Mac as a localhost for deploying Red Hat's Ansible Workshops and Demos integrated with AWS, there are a number of configruation items that need to be setup before you will be able to harness the power of Ansbile. 
 
 Ansible is written in Python and requires certain dependencies to work with cloud platforms. In this case it uses a python package called BOTO and others depending on the config being deployed.
 
