@@ -35,4 +35,5 @@ ansible-playbook provision_lab.yml -e @extra_vars.yml
 [%notitle,background-iframe="https://videos.learning.redhat.com/media/Emergency+Response+Demo+%28ER-Demo%29++Deploy+on+Rosa/1_ldv9j9pu"]
 
 == a youtube video
+touch
 
